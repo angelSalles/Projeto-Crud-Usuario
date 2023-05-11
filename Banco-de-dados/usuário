@@ -1,0 +1,30 @@
+CREATE USER angel PASSWORD 'admin' SUPERUSER INHERIT CREATEDB CREATEROLE;
+
+COMMENT ON SCHEMA usuario IS 'Criação do Esquema chamado usuario';
+
+GRANT ALL ON SCHEMA usuario TO postgres, angel;
+
+CREATE SEQUENCE "usuario".usuario_seq_id;
+COMMENT ON SEQUENCE "usuario".usuario_seq_id IS 'Usado para gerar chaves primárias ID automaticamente';
+
+CREATE TABLE "usuario".conta_usuario
+(
+	id integer DEFAULT nextval('"usuario".usuario_seq_id') NOT NULL,
+	nome varchar(50) NOT NULL,
+	login varchar(30) NOT NULL,
+	senha varchar(30) NOT NULL,
+    CONSTRAINT pk_id primary key(id)
+);
+
+COMMENT ON TABLE "usuario".conta_usuario IS 'Representa a entidade conta_usuario';
+COMMENT ON COLUMN "usuario".conta_usuario.id IS 'Chave primária';
+COMMENT ON COLUMN "usuario".conta_usuario.nome IS ' Nome do usuário';
+COMMENT ON COLUMN "usuario".conta_usuario.login IS ' Login do usuário';
+COMMENT ON COLUMN "usuario".conta_usuario.senha IS ' Senha do usuário';
+
+CREATE INDEX usuario_index_id ON "usuario".conta_usuario (id);
+COMMENT ON INDEX "usuario".usuario_index_id IS 'A entidade Login Usuário é ordenada pelo id';
+
+INSERT INTO "usuario".conta_usuario (nome, login, senha) VALUES ('Angel Sales','AGSales','12345');
+
+select * from "usuario".conta_usuario
